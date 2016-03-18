@@ -1,0 +1,86 @@
+#define white 0
+#define gray 1
+#define black 2
+#define max 100
+#include<stdio.h>
+void main()
+{
+    int n,M[max][max],i,j;
+    printf("Enter the number of nodes:");
+    scanf("%d",&n);
+    printf("The adjacency matrix for a graph:");
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            scanf("%d",&M[i][j]);
+        }
+    }
+    int s;
+    printf("Taking the source node:");
+    scanf("%d",&s);
+    bfs(M,n,s);
+
+}
+int bfs(int M[max][max],int n,int s)
+{
+    int v,color[max],queue[max];
+    printf("Traversing sequences:");
+    for(v=1;v<n;v++)
+    {
+        color[v]=white;
+    }
+    int q,head,tail; /*initialize*/
+    head=-1;
+    tail=-1;
+    q=0;
+    color[s]=gray;
+    q=insertQ(queue,n,tail,q,s);  /*insert source node into queue*/
+    while(q!=0)  /*while there are nodes in the queue*/
+    {
+        s=deleteQ(queue,head,q,s,n);
+        for(v=0;v<n;v++)
+        {
+            if(M[s][v]!=0)
+            {
+                if(color[v]==white)
+                {
+                    color[v]=gray;
+                    insertQ(queue,n,tail,q,v);
+                    print(s,v,head);
+                }
+            }
+        }
+        color[s]=black;
+    }
+    printf("\n");
+}
+insertQ(int queue[],int n,int tail,int q,int s)
+{
+    tail=(tail+1)%n;
+    queue[tail]=s;
+    printf("\nQueue=%d",queue[tail]);
+    q++;
+    return q;
+}
+int deleteQ(int queue[],int head,int q,int s,int n)
+{
+    head=(head+1)%n;
+    s=queue[head];
+    q--;
+    return s;
+
+}
+int print(int s,int v,int head)
+{
+    if(v==s)
+        printf("The path of s to v is= %d",s);
+    else if(head==0)
+        printf("no path s to v");
+    else
+        printf("\nThe path of s to v is= %d",v);
+    return 0;
+
+}
+
+
